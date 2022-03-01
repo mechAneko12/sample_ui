@@ -1,11 +1,13 @@
-from typing import Optional
+from typing import Optional, List
+import datetime
 
 from pydantic import BaseModel
 
 
 class ItemBase(BaseModel):
     title: str
-    description: Optional[str] = None
+    timestamp: datetime.datetime
+    description: Optional[List[List[float]]]# = None
 
 
 class ItemCreate(ItemBase):
