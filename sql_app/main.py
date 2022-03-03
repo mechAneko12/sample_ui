@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 
+import logging
+
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -44,6 +46,8 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 def create_item_for_user(
     user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
 ):
+    # logger = logging.getLogger('uvicorn')
+    # logger.info('info-test')
     return crud.create_user_item(db=db, item=item, user_id=user_id)
 
 
@@ -51,3 +55,8 @@ def create_item_for_user(
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = crud.get_items(db, skip=skip, limit=limit)
     return items
+
+@app.post("/item_by_id/", response_model=schemas.Item)
+def read_items(content: schemas.ItemById, db: Session = Depends(get_db)):
+    item = crud.get_item_by_id(db, content.id)
+    return item
