@@ -1,38 +1,16 @@
 import streamlit as st
-from st_aggrid import AgGrid
-from st_aggrid.grid_options_builder import GridOptionsBuilder
 from streamlit_plotly_events import plotly_events
 import matplotlib.pyplot as plt
 import numpy as np
 
 from plot_graph import plot_heatmap
 
-
-def database_table(df):
-    gb = GridOptionsBuilder.from_dataframe(df)
-    gb.configure_pagination()
-    gb.configure_side_bar()
-    #gb.configure_default_column(groupable=True, value=True, enableRowGroup=True, aggFunc="sum", editable=True)
-    gb.configure_selection('single')
-    gridOptions = gb.build()
-
-    from st_aggrid.shared import GridUpdateMode
-    data = AgGrid(df, 
-                gridOptions=gridOptions, 
-                enable_enterprise_modules=True, 
-                allow_unsafe_jscode=True, 
-                update_mode=GridUpdateMode.SELECTION_CHANGED)
-    
-    return data
-
 def _automatic_selection(fig, raw_data):
-    
-    st.info('Automatic Selection')
+    st.header('Automatic Selection')
 
 
 def _range_selection(fig, raw_data):
-    
-    st.info('Range Selection')
+    st.header('Range Selection')
 
 def sidebar_func(fig, raw_data):
     apps = {
@@ -68,8 +46,7 @@ def sidebar_func(fig, raw_data):
 
     # 選択されたアプリケーションを処理する関数を呼び出す
     else:
-        if fig:
-            render_func = apps[selected_app_name]
-            render_func(fig, raw_data)
+        render_func = apps[selected_app_name]
+        render_func(fig, raw_data)
             
 

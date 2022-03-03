@@ -5,8 +5,8 @@ import plotly.graph_objects as go
 import numpy as np
 import json
 
-from sidebar_app import database_table, sidebar_func
-from sql_process import process_get, process_post
+from sidebar_app import sidebar_func
+from sql_process import database_table, process_get, process_post
 from plot_graph import plot_threeD_heatmap
 
 import warnings
