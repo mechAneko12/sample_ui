@@ -13,6 +13,8 @@ class ItemBase(BaseModel):
 class ItemCreate(ItemBase):
     pass
 
+class ItemById(BaseModel):
+    id: int
 
 class Item(ItemBase):
     id: int
