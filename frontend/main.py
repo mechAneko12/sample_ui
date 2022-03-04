@@ -12,7 +12,8 @@ from plot_graph import plot_threeD_heatmap
 import warnings
 warnings.simplefilter('ignore', FutureWarning)
 
-backend_url = 'http://127.0.0.1:8000'
+# backend_url = 'http://127.0.0.1:8000'
+backend_url = 'http://sql_app:8000'
 
 if 'selected_point' not in st.session_state: 
     st.session_state.selected_point = None
