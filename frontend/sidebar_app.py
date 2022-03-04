@@ -1,38 +1,39 @@
+from concurrent.futures import process
 import streamlit as st
-from st_aggrid import AgGrid
-from st_aggrid.grid_options_builder import GridOptionsBuilder
 from streamlit_plotly_events import plotly_events
+import plotly.express as px
 import matplotlib.pyplot as plt
 import numpy as np
+import cv2
 
 from plot_graph import plot_heatmap
 
-
-def database_table(df):
-    gb = GridOptionsBuilder.from_dataframe(df)
-    gb.configure_pagination()
-    gb.configure_side_bar()
-    #gb.configure_default_column(groupable=True, value=True, enableRowGroup=True, aggFunc="sum", editable=True)
-    gb.configure_selection('single')
-    gridOptions = gb.build()
-
-    from st_aggrid.shared import GridUpdateMode
-    data = AgGrid(df, 
-                gridOptions=gridOptions, 
-                enable_enterprise_modules=True, 
-                allow_unsafe_jscode=True, 
-                update_mode=GridUpdateMode.SELECTION_CHANGED)
-    
-    return data
-
 def _automatic_selection(fig, raw_data):
-    
-    st.info('Automatic Selection')
+    st.header('Automatic Selection')
+    if fig:
+        slider_thre1 = st.slider('threshold 1', 0, 1000, 200, 25)
+        slider_thre2 = st.slider('threshold 2', 0, 1000, 450, 25)
+        col1, col2 = st.columns(2)
+        
+        # binarization and edge detection
+        processed_img = map_img(raw_data)
+        mask = cv2.Canny(processed_img, slider_thre1, slider_thre2) 
+        # selected_point = something
+        
+        plot_heatmap(fig, selected_point=None)
+        with col1:
+            st.plotly_chart(fig)
+                
+        with col2:
+            fig_edge = px.imshow(mask, width=450, height=450)
+            fig_edge.update_layout(coloraxis_showscale=False)
+            # plt.subplots_adjust(left=5, right=10, bottom=5, top=10)
+            st.plotly_chart(fig_edge)
+            
 
 
 def _range_selection(fig, raw_data):
-    
-    st.info('Range Selection')
+    st.header('Range Selection')
 
 def sidebar_func(fig, raw_data):
     apps = {
@@ -68,8 +69,10 @@ def sidebar_func(fig, raw_data):
 
     # 選択されたアプリケーションを処理する関数を呼び出す
     else:
-        if fig:
-            render_func = apps[selected_app_name]
-            render_func(fig, raw_data)
+        render_func = apps[selected_app_name]
+        render_func(fig, raw_data)
             
-
+def map_img(raw_data):
+    data_tmp = raw_data - raw_data.min()
+    data_tmp = data_tmp / data_tmp.max() * 255
+    return data_tmp.astype(np.uint8)

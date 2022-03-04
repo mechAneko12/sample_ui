@@ -1,0 +1,43 @@
+version: '2.4'
+
+services:
+  db:
+    image: postgres:14.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgresql2022
+      - POSTGRES_DB=sample
+    ports:
+      - 5432:5432
+    container_name: db
+    networks:
+      - deploy_network
+
+  sql_app:
+    build: sql_app/
+    depends_on:
+      - db
+    ports: 
+      - 8000:8000
+    networks:
+      - deploy_network
+    container_name: sql_app
+
+  frontend:
+    build: frontend/
+    depends_on:
+      - sql_app
+    ports: 
+        - 8501:8501
+    networks:
+      - deploy_network
+    container_name: frontend
+
+networks:
+  deploy_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

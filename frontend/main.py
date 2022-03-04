@@ -5,14 +5,15 @@ import plotly.graph_objects as go
 import numpy as np
 import json
 
-from sidebar_app import database_table, sidebar_func
-from sql_process import process_get, process_post
+from sidebar_app import sidebar_func
+from sql_process import database_table, process_get, process_post
 from plot_graph import plot_threeD_heatmap
 
 import warnings
 warnings.simplefilter('ignore', FutureWarning)
 
-backend_url = 'http://127.0.0.1:8000'
+# backend_url = 'http://127.0.0.1:8000'
+backend_url = 'http://sql_app:8000'
 
 if 'selected_point' not in st.session_state: 
     st.session_state.selected_point = None
@@ -36,8 +37,8 @@ if len(selected_rows) != 0:
     post_content = {'id': int(selected_rows.loc[0, 'id'])}
     _selected_row = process_post(json.dumps(post_content),
                                  server_url=backend_url + '/item_by_id/')
-    fig = px.imshow(_selected_row['description'])
     raw_data = np.array(_selected_row['description'])
+    fig = px.imshow(raw_data, width=450, height=450)
 
 sidebar_func(fig, raw_data)
 
