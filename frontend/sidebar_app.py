@@ -1,12 +1,35 @@
+from concurrent.futures import process
 import streamlit as st
 from streamlit_plotly_events import plotly_events
+import plotly.express as px
 import matplotlib.pyplot as plt
 import numpy as np
+import cv2
 
 from plot_graph import plot_heatmap
 
 def _automatic_selection(fig, raw_data):
     st.header('Automatic Selection')
+    if fig:
+        slider_thre1 = st.slider('threshold 1', 0, 1000, 200, 25)
+        slider_thre2 = st.slider('threshold 2', 0, 1000, 450, 25)
+        col1, col2 = st.columns(2)
+        
+        # binarization and edge detection
+        processed_img = map_img(raw_data)
+        mask = cv2.Canny(processed_img, slider_thre1, slider_thre2) 
+        # selected_point = something
+        
+        plot_heatmap(fig, selected_point=None)
+        with col1:
+            st.plotly_chart(fig)
+                
+        with col2:
+            fig_edge = px.imshow(mask, width=450, height=450)
+            fig_edge.update_layout(coloraxis_showscale=False)
+            # plt.subplots_adjust(left=5, right=10, bottom=5, top=10)
+            st.plotly_chart(fig_edge)
+            
 
 
 def _range_selection(fig, raw_data):
@@ -49,4 +72,7 @@ def sidebar_func(fig, raw_data):
         render_func = apps[selected_app_name]
         render_func(fig, raw_data)
             
-
+def map_img(raw_data):
+    data_tmp = raw_data - raw_data.min()
+    data_tmp = data_tmp / data_tmp.max() * 255
+    return data_tmp.astype(np.uint8)
