@@ -1,4 +1,4 @@
-# FastAPI + Streamlit + PLotly + Opencv APP with Docker
+# FastAPI + postgresql + Streamlit + PLotly + Opencv APP with Docker
 
 ## How to start
 > Run below

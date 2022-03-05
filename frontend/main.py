@@ -24,7 +24,7 @@ st.title('Optical Frequency Comb data viewer')
 sql_items = process_get(backend_url + '/items/')
 sql_items_df = pd.DataFrame.from_dict(sql_items)
 
-data = database_table(sql_items_df.reindex(columns=['id', 'title', 'owner_id', 'description']))
+data = database_table(sql_items_df.reindex(columns=['id', 'timestamp', 'title', 'owner_id', 'description']))
 
 selected_rows = data['selected_rows']
 selected_rows = pd.DataFrame(selected_rows)

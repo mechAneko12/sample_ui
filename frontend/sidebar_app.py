@@ -8,8 +8,8 @@ import cv2
 
 from plot_graph import plot_heatmap
 
-def _automatic_selection(fig, raw_data):
-    st.header('Automatic Selection')
+def _edge_detection(fig, raw_data):
+    st.header('Edge Detection')
     if fig:
         slider_thre1 = st.slider('threshold 1', 0, 1000, 200, 25)
         slider_thre2 = st.slider('threshold 2', 0, 1000, 450, 25)
@@ -38,7 +38,7 @@ def _range_selection(fig, raw_data):
 def sidebar_func(fig, raw_data):
     apps = {
         '-': None,
-        'Automatic Selection': _automatic_selection,
+        'Edge Detection': _edge_detection,
         'Range Selection': _range_selection,
     }
     selected_app_name = st.sidebar.selectbox(label='apps',
