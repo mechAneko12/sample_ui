@@ -18,7 +18,7 @@ backend_url = 'http://sql_app:8000'
 if 'selected_point' not in st.session_state: 
     st.session_state.selected_point = None
 
-st.set_page_config(page_title='OFC data tool', layout="wide") 
+st.set_page_config(page_title='OFC data tool', layout='wide') 
 st.title('Optical Frequency Comb data viewer')
 
 sql_items = process_get(backend_url + '/items/')
@@ -26,7 +26,7 @@ sql_items_df = pd.DataFrame.from_dict(sql_items)
 
 data = database_table(sql_items_df.reindex(columns=['id', 'title', 'owner_id', 'description']))
 
-selected_rows = data["selected_rows"]
+selected_rows = data['selected_rows']
 selected_rows = pd.DataFrame(selected_rows)
 
 # _selected_row = None
