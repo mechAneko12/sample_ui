@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class ItemBase(BaseModel):
     title: str
     timestamp: datetime.datetime
-    description: Optional[List[List[float]]]# = None
+    description: List[List[float]]
 
 
 class ItemCreate(ItemBase):
