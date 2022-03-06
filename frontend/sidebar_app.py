@@ -11,13 +11,15 @@ import cv2
 import logging
 
 from plot_graph import plot_heatmap, plot_threeD_heatmap
-from sql_process import process_post
+from sql_process import process_get, process_post
 
 def _data_uploader():
     st.header('Data Uploader')
-    owner_id = st.selectbox('owner_id',[1,2])
+    root_url = 'http://sql_app:8000'
+    
+    owner_id = st.selectbox('owner_id',_list_owner_id(root_url + '/users/'))
     title = st.text_input('title', '')
-    url = 'http://sql_app:8000/users/{}/items'.format(owner_id)
+    url = root_url + '/users/{}/items'.format(owner_id)
     uploaded_file = st.file_uploader('File Upload', type='csv') 
     if uploaded_file is not None:
         insert_button_status = st.button(label='Insert data', on_click=_insert_button_clicked, args=(uploaded_file, title, url, ))
@@ -27,6 +29,12 @@ def _data_uploader():
             else:
                 st.info('Error occurred! (Code: {})'.format(st.session_state.insert_status))
 
+def _list_owner_id(url):
+    r = process_get(url)
+    output = []
+    for _j in r.json():
+        output.append(_j['id'])
+    return output
 
 def _insert_button_clicked(uploaded_file, title, url):
     uploaded_data = np.loadtxt(uploaded_file, delimiter=',')
