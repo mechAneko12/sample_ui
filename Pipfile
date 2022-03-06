@@ -9,6 +9,12 @@ uvicorn = "*"
 sqlalchemy = "*"
 psycopg2 = "*"
 numpy = "*"
+streamlit = "*"
+streamlit-aggrid = "*"
+plotly = "*"
+streamlit-plotly-events = "*"
+matplotlib = "*"
+opencv-python = "*"
 
 [dev-packages]
 

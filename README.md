@@ -1,4 +1,4 @@
-# FastAPI + Streamlit + PLotly + Opencv APP with Docker
+# FastAPI + postgresql + Streamlit + PLotly + Opencv APP with Docker
 
 ## How to start
 > Run below
@@ -37,3 +37,9 @@
 > ```
 > streamlit run .\frontend\main.py --server.port 8501
 > ```
+
+## How to connect database
+```
+docker-compose exec db /bin/bash
+psql -U postgres DATABASE_NAME
+```
