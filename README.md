@@ -37,3 +37,9 @@
 > ```
 > streamlit run .\frontend\main.py --server.port 8501
 > ```
+
+## How to connect database
+```
+docker-compose exec db /bin/bash
+psql -U postgres DATABASE_NAME
+```
